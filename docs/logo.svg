@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#0f0f1a"/>
+    </radialGradient>
+    <linearGradient id="flame" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="60%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="spark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="url(#bg)" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- Flame body -->
+  <path d="M50 78 C34 78 24 66 24 54 C24 44 30 38 36 32 C36 40 40 44 44 46 C42 38 46 28 50 22 C54 32 52 40 56 44 C60 36 60 30 58 24 C66 32 76 42 76 54 C76 66 66 78 50 78Z"
+        fill="url(#flame)" opacity="0.95"/>
+
+  <!-- Inner flame highlight -->
+  <path d="M50 70 C42 70 36 63 36 56 C36 50 40 46 44 46 C43 52 46 56 50 58 C54 54 54 48 52 44 C58 48 64 54 64 62 C64 67 58 70 50 70Z"
+        fill="#fef3c7" opacity="0.6"/>
+
+  <!-- Session dots — representing multiple windows -->
+  <circle cx="32" cy="82" r="3.5" fill="url(#spark)" opacity="0.9"/>
+  <circle cx="50" cy="86" r="3.5" fill="url(#spark)" opacity="0.9"/>
+  <circle cx="68" cy="82" r="3.5" fill="url(#spark)" opacity="0.9"/>
+
+  <!-- Connecting line between dots -->
+  <line x1="35" y1="82" x2="47" y2="86" stroke="#7c3aed" stroke-width="1" opacity="0.6"/>
+  <line x1="53" y1="86" x2="65" y2="82" stroke="#7c3aed" stroke-width="1" opacity="0.6"/>
+</svg>

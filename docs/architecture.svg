@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="960" height="520">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f0f1a"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+    <marker id="arrow-orange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f97316"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#a855f7"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#10b981"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="520" fill="url(#bg)" rx="12"/>
+
+  <!-- Title -->
+  <text x="480" y="38" font-family="'SF Mono', 'Fira Code', monospace" font-size="15" fill="#e2e8f0" text-anchor="middle" font-weight="bold">fireworks-sessions-saver — Architecture</text>
+
+  <!-- ── Row 1: Tool calls ── -->
+  <!-- Box: Claude Code / Codex -->
+  <rect x="60" y="70" width="180" height="56" rx="8" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="150" y="96" font-family="'SF Mono', 'Fira Code', monospace" font-size="11" fill="#3b82f6" text-anchor="middle" font-weight="bold">Claude Code / Codex</text>
+  <text x="150" y="114" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#94a3b8" text-anchor="middle">Write · Edit · Bash</text>
+
+  <!-- Arrow: tool call → heartbeat -->
+  <line x1="240" y1="98" x2="318" y2="98" stroke="#f97316" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
+  <text x="279" y="90" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#f97316" text-anchor="middle">PostToolUse</text>
+
+  <!-- Box: heartbeat.py -->
+  <rect x="320" y="70" width="160" height="56" rx="8" fill="#0f172a" stroke="#f97316" stroke-width="1.5"/>
+  <text x="400" y="96" font-family="'SF Mono', 'Fira Code', monospace" font-size="11" fill="#f97316" text-anchor="middle" font-weight="bold">heartbeat.py</text>
+  <text x="400" y="114" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#94a3b8" text-anchor="middle">async · &lt;5ms</text>
+
+  <!-- Arrow: heartbeat → session file -->
+  <line x1="480" y1="98" x2="558" y2="98" stroke="#f97316" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
+  <text x="519" y="90" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#f97316" text-anchor="middle">update</text>
+
+  <!-- Box: active session file -->
+  <rect x="560" y="70" width="200" height="56" rx="8" fill="#0f172a" stroke="#eab308" stroke-width="1.5"/>
+  <text x="660" y="92" font-family="'SF Mono', 'Fira Code', monospace" font-size="11" fill="#eab308" text-anchor="middle" font-weight="bold">active_{hash}.json</text>
+  <text x="660" y="108" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#94a3b8" text-anchor="middle">last_active · files</text>
+  <text x="660" y="120" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#475569" text-anchor="middle">~/.claude/sessions/</text>
+
+  <!-- ── Row 2: Manual checkpoint ── -->
+  <!-- Box: User says "save session" -->
+  <rect x="60" y="190" width="180" height="56" rx="8" fill="#0f172a" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="150" y="212" font-family="'SF Mono', 'Fira Code', monospace" font-size="11" fill="#a855f7" text-anchor="middle" font-weight="bold">User: "save session"</text>
+  <text x="150" y="230" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#94a3b8" text-anchor="middle">保存进度 · save progress</text>
+
+  <!-- Arrow: user → save_session.py -->
+  <line x1="240" y1="218" x2="318" y2="218" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+  <text x="279" y="210" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#a855f7" text-anchor="middle">Skill trigger</text>
+
+  <!-- Box: save_session.py -->
+  <rect x="320" y="190" width="160" height="56" rx="8" fill="#0f172a" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="400" y="212" font-family="'SF Mono', 'Fira Code', monospace" font-size="11" fill="#a855f7" text-anchor="middle" font-weight="bold">save_session.py</text>
+  <text x="400" y="230" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#94a3b8" text-anchor="middle">checkpoint action</text>
+
+  <!-- Arrow: save → session file -->
+  <line x1="480" y1="218" x2="558" y2="218" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrow-purple)"/>
+  <text x="519" y="210" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#a855f7" text-anchor="middle">rich checkpoint</text>
+
+  <!-- Box: checkpoint content -->
+  <rect x="560" y="175" width="200" height="90" rx="8" fill="#0f172a" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="660" y="197" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#a855f7" text-anchor="middle" font-weight="bold">Checkpoint (max 10)</text>
+  <text x="660" y="213" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#94a3b8" text-anchor="middle">task · decisions · questions</text>
+  <text x="660" y="227" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#94a3b8" text-anchor="middle">files (paths only) · git branch</text>
+  <text x="660" y="241" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#94a3b8" text-anchor="middle">commands · log_refs</text>
+  <text x="660" y="257" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#475569" text-anchor="middle">rolling window · 7-day expiry</text>
+
+  <!-- ── Row 3: Recovery ── -->
+  <!-- Box: New session -->
+  <rect x="60" y="330" width="180" height="56" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <text x="150" y="352" font-family="'SF Mono', 'Fira Code', monospace" font-size="11" fill="#10b981" text-anchor="middle" font-weight="bold">New Session Opens</text>
+  <text x="150" y="370" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#94a3b8" text-anchor="middle">any CLI tool · any window</text>
+
+  <!-- Arrow: new session → list_sessions -->
+  <line x1="240" y1="358" x2="318" y2="358" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <text x="279" y="350" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#10b981" text-anchor="middle">auto-scan</text>
+
+  <!-- Box: list_sessions.py -->
+  <rect x="320" y="330" width="160" height="56" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <text x="400" y="352" font-family="'SF Mono', 'Fira Code', monospace" font-size="11" fill="#10b981" text-anchor="middle" font-weight="bold">list_sessions.py</text>
+  <text x="400" y="370" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#94a3b8" text-anchor="middle">same workdir · &lt;7 days</text>
+
+  <!-- Arrow: list → restore -->
+  <line x1="480" y1="358" x2="558" y2="358" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+  <text x="519" y="350" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#10b981" text-anchor="middle">user selects</text>
+
+  <!-- Box: restore_session.py -->
+  <rect x="560" y="330" width="200" height="56" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <text x="660" y="352" font-family="'SF Mono', 'Fira Code', monospace" font-size="11" fill="#10b981" text-anchor="middle" font-weight="bold">restore_session.py</text>
+  <text x="660" y="370" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#94a3b8" text-anchor="middle">structured context summary</text>
+
+  <!-- Arrow: restore → new session context -->
+  <line x1="760" y1="358" x2="838" y2="358" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+
+  <!-- Box: context restored -->
+  <rect x="840" y="330" width="80" height="56" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <text x="880" y="356" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#10b981" text-anchor="middle" font-weight="bold">Context</text>
+  <text x="880" y="372" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#10b981" text-anchor="middle">Restored</text>
+
+  <!-- ── Cleanup note ── -->
+  <rect x="560" y="420" width="360" height="44" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+  <text x="740" y="440" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#94a3b8" text-anchor="middle">After first new checkpoint → archive file deleted</text>
+  <text x="740" y="456" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#475569" text-anchor="middle">No stale files accumulate over time</text>
+
+  <!-- Vertical connector: active file → checkpoint -->
+  <line x1="660" y1="126" x2="660" y2="175" stroke="#eab308" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+
+  <!-- Vertical connector: checkpoint → restore -->
+  <line x1="660" y1="265" x2="660" y2="330" stroke="#a855f7" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <text x="672" y="300" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#475569">archive</text>
+</svg>
