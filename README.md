@@ -6,11 +6,12 @@
 
 **Never lose your coding session context again.**
 
-Automatically persists and restores session state across Claude Code, Codex, and other coding CLI tools.
+Automatically persists and restores session state for Claude Code. Codex support coming soon.
 
 [![Version](https://img.shields.io/badge/version-1.0.0-orange.svg)](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)](https://claude.ai/code)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-supported-8A2BE2)](https://claude.ai/code)
+[![Codex](https://img.shields.io/badge/Codex-planned-gray.svg)](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/issues)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://python.org)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/pulls)
 
@@ -119,8 +120,19 @@ python3 ~/.claude/skills/fireworks-sessions-saver/scripts/restore_session.py \
 ## Requirements
 
 - Python 3.9+
-- Claude Code CLI (or Codex CLI)
+- Claude Code CLI
 - macOS / Linux
+
+> **Codex CLI**: Hook-based auto-tracking is not yet supported (Codex does not have a hook system). Manual checkpoint and restore via the scripts still work. Full Codex support is on the roadmap.
+
+---
+
+## Roadmap
+
+- [x] Claude Code — full auto-tracking via PostToolUse hook
+- [ ] Codex CLI — auto-tracking support ([planned](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/issues))
+- [ ] Session diff view — show what changed between checkpoints
+- [ ] Multi-project dashboard — view all active sessions across directories
 
 ---
 

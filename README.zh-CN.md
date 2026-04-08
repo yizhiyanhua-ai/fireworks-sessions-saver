@@ -6,11 +6,12 @@
 
 **再也不会丢失编程会话上下文。**
 
-自动持久化并恢复 Claude Code、Codex 等 coding CLI 工具的会话状态。
+自动持久化并恢复 Claude Code 的会话状态。Codex 支持即将推出。
 
 [![Version](https://img.shields.io/badge/version-1.0.0-orange.svg)](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Claude Code](https://img.shields.io/badge/Claude%20Code-compatible-8A2BE2)](https://claude.ai/code)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-supported-8A2BE2)](https://claude.ai/code)
+[![Codex](https://img.shields.io/badge/Codex-planned-gray.svg)](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/issues)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://python.org)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/pulls)
 
@@ -115,6 +116,21 @@ python3 ~/.claude/skills/fireworks-sessions-saver/scripts/restore_session.py \
 ---
 
 ## 环境要求
+
+- Python 3.9+
+- Claude Code CLI
+- macOS / Linux
+
+> **Codex CLI**：基于 hook 的自动追踪暂不支持（Codex 没有 hook 系统）。手动 checkpoint 和恢复脚本仍可正常使用。完整 Codex 支持已列入计划。
+
+---
+
+## 路线图
+
+- [x] Claude Code — 通过 PostToolUse hook 全自动追踪
+- [ ] Codex CLI — 自动追踪支持（[计划中](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/issues)）
+- [ ] Session diff 视图 — 展示两次 checkpoint 之间的变化
+- [ ] 多项目看板 — 跨目录查看所有活跃 session
 
 - Python 3.9+
 - Claude Code CLI（或 Codex CLI）
