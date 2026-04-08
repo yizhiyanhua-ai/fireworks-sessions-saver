@@ -55,9 +55,20 @@
 
 <img src="https://raw.githubusercontent.com/yizhiyanhua-ai/fireworks-sessions-saver/main/docs/architecture.svg" alt="架构图" width="100%"/>
 
+**左侧——追踪链路：** 每次 `Write`、`Edit`、`Bash` 调用都会异步触发 `heartbeat.py`（&lt;5ms），更新 `last_active` 并将 git 修改的文件路径合并进 session 文件。说"保存进度"时，写入完整 checkpoint——记录当前任务、关键决策、未解决问题、文件引用、git 分支和日志路径。下次 session 初始化时，当前文件自动归档。
+
+**右侧——恢复链路：** 新 session 启动时，`list_sessions.py` 自动扫描同一工作目录下 7 天内有活动的历史 session。用户选择后，`restore_session.py` 输出结构化上下文摘要。新 session 保存第一个 checkpoint 后，归档文件自动删除，不会积累冗余文件。
+
 ### 组件图
 
 <img src="https://raw.githubusercontent.com/yizhiyanhua-ai/fireworks-sessions-saver/main/docs/components.svg" alt="组件图" width="100%"/>
+
+从上到下四层：
+
+- **CLI 工具层** — 主要支持 Claude Code 和 Codex，架构对其他 coding CLI 工具开放扩展。
+- **Hook 层** — `settings.json` 中一条 `PostToolUse` hook，在每次文件写入或命令执行后异步触发 `heartbeat.py`，对使用流程零影响。
+- **脚本层** — 四个职责单一的 Python 脚本：`heartbeat.py`（自动、轻量）、`save_session.py`（初始化 / checkpoint / 清理）、`list_sessions.py`（扫描 & 排序）、`restore_session.py`（格式化 & 输出）。
+- **存储层** — `~/.claude/sessions/` 下两类 JSON 文件：`active_{hash}.json` 存储当前 session（滚动 10 条 checkpoint），`archive_{hash}_{ts}.json` 存储等待恢复或过期的历史 session。
 
 ---
 

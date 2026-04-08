@@ -55,9 +55,20 @@ In Claude Code or Codex, just say:
 
 <img src="https://raw.githubusercontent.com/yizhiyanhua-ai/fireworks-sessions-saver/main/docs/architecture.svg" alt="Architecture" width="100%"/>
 
+**Left — Tracking flow:** Every `Write`, `Edit`, or `Bash` call fires `heartbeat.py` asynchronously (&lt;5ms), updating `last_active` and merging git-modified file paths into the active session file. When you say "save session", a rich checkpoint is written — capturing the current task, key decisions, open questions, file references, git branch, and log paths. On the next session init, the active file is archived.
+
+**Right — Recovery flow:** When a new session opens, `list_sessions.py` automatically scans for sessions in the same working directory active within the last 7 days. After you select one, `restore_session.py` prints a structured context summary. Once the first new checkpoint is saved, the archive file is deleted — no stale files accumulate.
+
 ### Components
 
 <img src="https://raw.githubusercontent.com/yizhiyanhua-ai/fireworks-sessions-saver/main/docs/components.svg" alt="Components" width="100%"/>
+
+Four layers, top to bottom:
+
+- **CLI Tools** — Claude Code and Codex are the primary supported tools; the architecture is open to any coding CLI.
+- **Hook Layer** — A single `PostToolUse` hook in `settings.json` fires `heartbeat.py` asynchronously after every file write or shell command. Zero impact on your workflow.
+- **Scripts** — Four focused Python scripts: `heartbeat.py` (auto, lightweight), `save_session.py` (init / checkpoint / cleanup), `list_sessions.py` (scan & rank), `restore_session.py` (format & print).
+- **Storage** — Two JSON file types in `~/.claude/sessions/`: `active_{hash}.json` for the running session (rolling 10 checkpoints), and `archive_{hash}_{ts}.json` for sessions awaiting restore or expiry.
 
 ---
 
