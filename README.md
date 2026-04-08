@@ -90,6 +90,36 @@ In a new window, Claude automatically checks for recoverable sessions on startup
 - `restore session` / `continue from last session`
 - `恢复会话` / `继续之前的工作`
 
+### View all sessions (dashboard)
+Say any of:
+- `dashboard` / `show all sessions` / `which projects are active`
+- `查看所有 session` / `多项目看板`
+
+Claude will run the dashboard and show all active sessions across every working directory.
+
+```bash
+# Manual CLI usage
+python3 ~/.claude/skills/fireworks-sessions-saver/scripts/dashboard.py
+python3 ~/.claude/skills/fireworks-sessions-saver/scripts/dashboard.py --all   # include expired
+```
+
+### Diff two checkpoints
+Say any of:
+- `diff checkpoint` / `what changed since last checkpoint`
+- `对比进度` / `两次 checkpoint 有什么变化`
+
+Claude will compare the last two checkpoints and show what changed in task, files, decisions, and open questions.
+
+```bash
+# Manual CLI usage
+python3 ~/.claude/skills/fireworks-sessions-saver/scripts/diff_session.py \
+  --session-file ~/.claude/sessions/active_<hash>.json
+python3 ~/.claude/skills/fireworks-sessions-saver/scripts/diff_session.py \
+  --session-file ~/.claude/sessions/active_<hash>.json --list   # list all checkpoints
+python3 ~/.claude/skills/fireworks-sessions-saver/scripts/diff_session.py \
+  --session-file ~/.claude/sessions/active_<hash>.json --from 2 --to 4
+```
+
 ### Manual CLI usage
 ```bash
 # List recoverable sessions for current directory
