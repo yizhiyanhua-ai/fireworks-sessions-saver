@@ -1,6 +1,6 @@
 ---
 name: fireworks-sessions-saver
-description: Session state persistence and recovery for coding CLI tools (Claude Code, Codex). ALWAYS use this skill when: (1) starting any new session — proactively check for recoverable previous sessions from the same working directory, (2) user says "save session", "checkpoint", "save progress", "记录进度", "保存状态", (3) user says "restore session", "context lost", "continue from", "reconnect", "恢复会话", "继续之前的工作", (4) after a crash or network timeout. Do not wait for the user to ask — check for stale sessions at every session start.
+description: Session state persistence and recovery for coding CLI tools (Claude Code, Codex). ALWAYS use this skill when: (1) starting any new session — proactively check for recoverable previous sessions from the same working directory, (2) user says "save session", "checkpoint", "save progress", "记录进度", "保存状态", (3) user says "restore session", "context lost", "continue from", "reconnect", "恢复会话", "继续之前的工作", (4) after a crash or network timeout, (5) user says "dashboard", "show all sessions", "查看所有 session", "多项目看板", "哪些项目在跑", (6) user says "diff checkpoint", "对比进度", "两次 checkpoint 有什么变化", "checkpoint 差异". Do not wait for the user to ask — check for stale sessions at every session start.
 ---
 
 # fireworks-sessions-saver
@@ -95,7 +95,42 @@ python ~/.claude/skills/fireworks-sessions-saver/scripts/save_session.py \
   --archive-file ~/.claude/sessions/archive_{hash}_{ts}.json
 ```
 
-### 4. Log Discovery (Supplementary)
+### 4. Diff Two Checkpoints
+
+Compare what changed between any two checkpoints in a session:
+
+```bash
+# List all checkpoints in a session file
+python ~/.claude/skills/fireworks-sessions-saver/scripts/diff_session.py \
+  --session-file ~/.claude/sessions/active_{hash}.json --list
+
+# Diff last two checkpoints (default)
+python ~/.claude/skills/fireworks-sessions-saver/scripts/diff_session.py \
+  --session-file ~/.claude/sessions/active_{hash}.json
+
+# Diff specific checkpoints (1-based index)
+python ~/.claude/skills/fireworks-sessions-saver/scripts/diff_session.py \
+  --session-file ~/.claude/sessions/active_{hash}.json --from 2 --to 4
+```
+
+Shows changes in: task, summary, files (with role changes), key decisions, open questions, git branch.
+
+### 5. Multi-Project Dashboard
+
+View all active sessions across all working directories:
+
+```bash
+# Show active sessions only
+python ~/.claude/skills/fireworks-sessions-saver/scripts/dashboard.py
+
+# Include expired sessions (> 7 days)
+python ~/.claude/skills/fireworks-sessions-saver/scripts/dashboard.py --all
+
+# Raw JSON output
+python ~/.claude/skills/fireworks-sessions-saver/scripts/dashboard.py --json
+```
+
+### 6. Log Discovery (Supplementary)
 
 When restoring, enrich context by checking tool logs. See `references/log-discovery.md` for Claude Code and Codex log locations.
 
