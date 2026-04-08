@@ -1,0 +1,23 @@
+{
+  "jobs": 2,
+  "tasks": [
+    {
+      "id": "context-loss",
+      "promptFiles": ["prompts/01-scene-context-loss.md"],
+      "image": "01-scene-context-loss.png",
+      "provider": "google",
+      "model": "gemini-3-pro-image-preview",
+      "ar": "16:9",
+      "quality": "2k"
+    },
+    {
+      "id": "new-features",
+      "promptFiles": ["prompts/02-infographic-new-features.md"],
+      "image": "02-infographic-new-features.png",
+      "provider": "google",
+      "model": "gemini-3-pro-image-preview",
+      "ar": "16:9",
+      "quality": "2k"
+    }
+  ]
+}
