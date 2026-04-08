@@ -43,11 +43,9 @@ New session: "Found 1 previous session — restore?" → one keystroke   ✓ bac
 
 ## Install
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/yizhiyanhua-ai/fireworks-sessions-saver/main/install.sh | bash
-```
+In Claude Code or Codex, just say:
 
-Then type `/hooks` in Claude Code to activate — that's it.
+> *"Install fireworks-sessions-saver from https://github.com/yizhiyanhua-ai/fireworks-sessions-saver"*
 
 ---
 

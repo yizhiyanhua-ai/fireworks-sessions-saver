@@ -43,11 +43,9 @@
 
 ## 安装
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/yizhiyanhua-ai/fireworks-sessions-saver/main/install.sh | bash
-```
+在 Claude Code 或 Codex 对话框里直接说：
 
-然后在 Claude Code 中输入 `/hooks` 激活，完成。
+> *"从 https://github.com/yizhiyanhua-ai/fireworks-sessions-saver 安装 fireworks-sessions-saver"*
 
 ---
 
