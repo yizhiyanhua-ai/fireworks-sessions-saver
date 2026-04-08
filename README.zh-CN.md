@@ -43,55 +43,23 @@
 
 ## 安装
 
-**在 Claude Code 里直接说：**
-
-> *"帮我从 https://github.com/yizhiyanhua-ai/fireworks-sessions-saver 安装 fireworks-sessions-saver"*
-
-或者在终端直接运行：
-
 ```bash
 curl -fsSL https://raw.githubusercontent.com/yizhiyanhua-ai/fireworks-sessions-saver/main/install.sh | bash
 ```
 
-然后在 Claude Code 中输入 `/hooks` 激活。
+然后在 Claude Code 中输入 `/hooks` 激活，完成。
 
 ---
 
 ## 工作原理
 
-### 完整流程
+### 架构图
 
-```
-每次 Write / Edit / Bash 调用
-        ↓
-heartbeat.py（异步，<5ms）
-        ↓
-更新 last_active + 合并 git 修改的文件路径
-        ↓
-~/.claude/sessions/active_{hash}.json
+<img src="https://raw.githubusercontent.com/yizhiyanhua-ai/fireworks-sessions-saver/main/docs/architecture.svg" alt="架构图" width="100%"/>
 
-说「保存进度」/「save session」
-        ↓
-完整 checkpoint：任务描述、关键决策、
-未解决问题、文件引用、git 分支、日志路径
-        ↓
-每个 session 最多保留 10 条（滚动窗口）
+### 组件图
 
-新 session 启动
-        ↓
-list_sessions.py 扫描 7 天内的历史 session
-        ↓
-用户选择 → restore_session.py 输出完整上下文
-        ↓
-新 session 保存第一个 checkpoint 后，旧文件删除
-```
-
-### Hook 说明
-
-| Hook | 触发时机 | 作用 |
-|------|---------|------|
-| `PostToolUse` (Write\|Edit\|Bash) | 每次文件/命令操作后 | 轻量心跳——更新 `last_active`，合并修改文件 |
-| Skill 触发 | session 启动或用户请求 | 检查可恢复 session、初始化新 session、保存/恢复 checkpoint |
+<img src="https://raw.githubusercontent.com/yizhiyanhua-ai/fireworks-sessions-saver/main/docs/components.svg" alt="组件图" width="100%"/>
 
 ---
 

@@ -43,55 +43,23 @@ New session: "Found 1 previous session — restore?" → one keystroke   ✓ bac
 
 ## Install
 
-**In Claude Code, just say:**
-
-> *"Help me install fireworks-sessions-saver from https://github.com/yizhiyanhua-ai/fireworks-sessions-saver"*
-
-Or run directly in your terminal:
-
 ```bash
 curl -fsSL https://raw.githubusercontent.com/yizhiyanhua-ai/fireworks-sessions-saver/main/install.sh | bash
 ```
 
-Then type `/hooks` in Claude Code to activate.
+Then type `/hooks` in Claude Code to activate — that's it.
 
 ---
 
 ## How It Works
 
-### End-to-End Flow
+### Architecture
 
-```
-Every Write / Edit / Bash call
-        ↓
-heartbeat.py (async, <5ms)
-        ↓
-Updates last_active + merges git-modified files
-        ↓
-~/.claude/sessions/active_{hash}.json
+<img src="https://raw.githubusercontent.com/yizhiyanhua-ai/fireworks-sessions-saver/main/docs/architecture.svg" alt="Architecture" width="100%"/>
 
-Say "save session" / "保存进度"
-        ↓
-Rich checkpoint: task summary, key decisions,
-open questions, file refs, git branch, log paths
-        ↓
-Rolling window of 10 checkpoints per session
+### Components
 
-New session opens
-        ↓
-list_sessions.py scans for sessions < 7 days old
-        ↓
-User selects → restore_session.py prints full context
-        ↓
-Old file deleted after first new checkpoint saved
-```
-
-### Hook Table
-
-| Hook | Event | Job |
-|------|-------|-----|
-| `PostToolUse` (Write\|Edit\|Bash) | After every file/shell op | Lightweight heartbeat — updates `last_active`, merges modified files |
-| Skill trigger | Session start or user request | Check for recoverable sessions, init new session, save/restore checkpoints |
+<img src="https://raw.githubusercontent.com/yizhiyanhua-ai/fireworks-sessions-saver/main/docs/components.svg" alt="Components" width="100%"/>
 
 ---
 
