@@ -48,13 +48,13 @@ for f in session-format.md log-discovery.md; do
   info "references/$f"
 done
 
-for f in save_session.py list_sessions.py restore_session.py heartbeat.py; do
+for f in save_session.py list_sessions.py restore_session.py heartbeat.py diff_session.py dashboard.py; do
   curl -fsSL "$REPO/skill/scripts/$f" -o "$SKILL_DIR/scripts/$f"
   info "scripts/$f"
 done
 
 # ── 4. Syntax check ────────────────────────────────────────────────────────────
-for f in save_session.py list_sessions.py restore_session.py heartbeat.py; do
+for f in save_session.py list_sessions.py restore_session.py heartbeat.py diff_session.py dashboard.py; do
   python3 -m py_compile "$SKILL_DIR/scripts/$f" || error "Syntax error in $f"
 done
 info "All scripts verified (syntax OK)"
@@ -91,11 +91,26 @@ already = any(
 if not already:
     post_entries.append({"matcher": "Write|Edit|Bash", "hooks": [new_hook]})
 
+# SessionStart hook — auto-init session on every new window
+init_hook = {
+    "type": "command",
+    "command": f"python3 {skill_dir}/scripts/save_session.py --working-dir \"$PWD\" --tool claude-code --action init",
+    "async": True,
+}
+start_entries = hooks.setdefault("SessionStart", [])
+already_start = any(
+    any(h.get("command", "") == init_hook["command"] for h in e.get("hooks", []))
+    for e in start_entries
+)
+if not already_start:
+    start_entries.append({"hooks": [init_hook]})
+
 settings_path.write_text(json.dumps(settings, indent=2, ensure_ascii=False) + "\n")
 print("OK")
 PYEOF
 
 info "Heartbeat hook registered"
+info "SessionStart auto-init hook registered"
 
 # ── 6. Done ────────────────────────────────────────────────────────────────────
 echo ""
