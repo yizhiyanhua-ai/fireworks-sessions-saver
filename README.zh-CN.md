@@ -129,8 +129,8 @@ python3 ~/.claude/skills/fireworks-sessions-saver/scripts/restore_session.py \
 
 - [x] Claude Code — 通过 PostToolUse hook 全自动追踪
 - [ ] Codex CLI — 自动追踪支持（[计划中](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/issues)）
-- [ ] Session diff 视图 — 展示两次 checkpoint 之间的变化
-- [ ] 多项目看板 — 跨目录查看所有活跃 session
+- [x] Session diff 视图 — 展示两次 checkpoint 之间的变化
+- [x] 多项目看板 — 跨目录查看所有活跃 session
 
 - Python 3.9+
 - Claude Code CLI（或 Codex CLI）
@@ -151,7 +151,9 @@ fireworks-sessions-saver/
 │       ├── save_session.py           ← 初始化 / checkpoint / 清理
 │       ├── list_sessions.py          ← 查找可恢复 session
 │       ├── restore_session.py        ← 输出结构化恢复摘要
-│       └── heartbeat.py              ← 轻量级异步 hook
+│       ├── heartbeat.py              ← 轻量级异步 hook
+│       ├── diff_session.py           ← 对比两次 checkpoint 差异
+│       └── dashboard.py              ← 多项目 session 看板
 ├── install.sh
 ├── LICENSE
 ├── README.md

@@ -131,8 +131,8 @@ python3 ~/.claude/skills/fireworks-sessions-saver/scripts/restore_session.py \
 
 - [x] Claude Code — full auto-tracking via PostToolUse hook
 - [ ] Codex CLI — auto-tracking support ([planned](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/issues))
-- [ ] Session diff view — show what changed between checkpoints
-- [ ] Multi-project dashboard — view all active sessions across directories
+- [x] Session diff view — show what changed between checkpoints
+- [x] Multi-project dashboard — view all active sessions across directories
 
 ---
 
@@ -149,7 +149,9 @@ fireworks-sessions-saver/
 │       ├── save_session.py           ← init / checkpoint / cleanup
 │       ├── list_sessions.py          ← find recoverable sessions
 │       ├── restore_session.py        ← print structured context summary
-│       └── heartbeat.py              ← lightweight async hook
+│       ├── heartbeat.py              ← lightweight async hook
+│       ├── diff_session.py           ← diff two checkpoints
+│       └── dashboard.py              ← multi-project session dashboard
 ├── install.sh
 ├── LICENSE
 ├── README.md
