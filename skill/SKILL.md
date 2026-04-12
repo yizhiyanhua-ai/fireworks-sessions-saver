@@ -1,6 +1,15 @@
 ---
 name: fireworks-sessions-saver
-description: Session state persistence and recovery for coding CLI tools (Claude Code, Codex). ALWAYS use this skill when: (1) starting any new session — proactively check for recoverable previous sessions from the same working directory, (2) user says "save session", "checkpoint", "save progress", "记录进度", "保存状态", (3) user says "restore session", "context lost", "continue from", "reconnect", "恢复会话", "继续之前的工作", (4) after a crash or network timeout, (5) user says "dashboard", "show all sessions", "查看所有 session", "多项目看板", "哪些项目在跑", (6) user says "diff checkpoint", "对比进度", "两次 checkpoint 有什么变化", "checkpoint 差异". Do not wait for the user to ask — check for stale sessions at every session start.
+description: |
+  Session state persistence and recovery for coding CLI tools (Claude Code, Codex).
+  ALWAYS use this skill when: (1) starting any new session — proactively check
+  for recoverable previous sessions from the same working directory, (2) user says
+  "save session", "checkpoint", "save progress", "记录进度", "保存状态", (3) user
+  says "restore session", "context lost", "continue from", "reconnect", "恢复会话",
+  "继续之前的工作", (4) after a crash or network timeout, (5) user says "dashboard",
+  "show all sessions", "查看所有 session", "多项目看板", "哪些项目在跑", (6) user
+  says "diff checkpoint", "对比进度", "两次 checkpoint 有什么变化", "checkpoint 差异".
+  Do not wait for the user to ask — check for stale sessions at every session start.
 ---
 
 # fireworks-sessions-saver
