@@ -1,11 +1,11 @@
 ---
 name: fireworks-sessions-saver
-description: Session state persistence and recovery for Claude Code. TRIGGER when user asks about session persistence, context recovery, save progress, restore session, checkpoint, crash recovery, session dashboard, or wants to install fireworks-sessions-saver.
+description: Session state persistence and recovery for Claude Code, with manual Codex checkpoint/restore workflows. TRIGGER when user asks about session persistence, context recovery, save progress, restore session, checkpoint, crash recovery, session dashboard, or wants to install fireworks-sessions-saver.
 ---
 
 # fireworks-sessions-saver
 
-Never lose your coding session context again. Auto-persists and restores session state for Claude Code.
+Never lose your coding session context again. Auto-persists and restores session state for Claude Code, with manual Codex flows available today.
 
 ## What It Does
 
@@ -21,7 +21,7 @@ Network timeouts, crashes, and accidental window closures kill your session cont
 
 ### Quick Install
 
-In Claude Code, say:
+In Claude Code or Codex, say:
 
 > "Help me install fireworks-sessions-saver from https://github.com/yizhiyanhua-ai/fireworks-sessions-saver"
 
@@ -39,7 +39,7 @@ npx skills add yizhiyanhua-ai/fireworks-sessions-saver -g
 
 ## How It Works
 
-A single `PostToolUse` hook fires `heartbeat.py` asynchronously after every `Write`, `Edit`, or `Bash` call — updating `last_active` and tracking modified files.
+In Claude Code, a single `PostToolUse` hook fires `heartbeat.py` asynchronously after every `Write`, `Edit`, or `Bash` call — updating `last_active` and tracking modified files. In Codex, use the same checkpoint/restore scripts explicitly because there is no hook system yet.
 
 | Component | Purpose |
 |-----------|---------|
@@ -63,7 +63,8 @@ Only file **paths** are stored — never file contents.
 ## Requirements
 
 - Python 3.9+
-- Claude Code CLI
+- Claude Code CLI for auto-tracking
+- Codex CLI for manual checkpoint / restore flows
 - macOS / Linux
 
 ## More Information

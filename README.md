@@ -6,12 +6,12 @@
 
 **Never lose your coding session context again.**
 
-Automatically persists and restores session state for Claude Code. Codex support coming soon.
+Automatically persists and restores session state for Claude Code, with manual Codex workflows available today.
 
 [![Version](https://img.shields.io/badge/version-1.0.0-orange.svg)](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-supported-8A2BE2)](https://claude.ai/code)
-[![Codex](https://img.shields.io/badge/Codex-planned-gray.svg)](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/issues)
+[![Codex](https://img.shields.io/badge/Codex-manual-111111.svg)](https://openai.com)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://python.org)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/pulls)
 
@@ -32,12 +32,14 @@ New session: "What were we working on?" — 10 minutes re-explaining   ✗ expen
 
 ## The Solution
 
-`fireworks-sessions-saver` automatically tracks what you're working on and makes it instantly available when you reconnect — in any new Claude Code or Codex window.
+`fireworks-sessions-saver` automatically tracks what you're working on in Claude Code and makes it instantly available when you reconnect. The same checkpoint and restore scripts are also usable from Codex today.
 
 ```
 Session 1:  Working on auth refactor → auto-tracked every tool call
             Network drops
 New session: "Found 1 previous session — restore?" → one keystroke   ✓ back in 5 seconds
+
+Codex:      Save a checkpoint explicitly → restore from the same scripts later  ✓ usable today
 ```
 
 ---
@@ -66,8 +68,8 @@ In Claude Code or Codex, just say:
 
 Four layers, top to bottom:
 
-- **CLI Tools** — Claude Code and Codex are the primary supported tools; the architecture is open to any coding CLI.
-- **Hook Layer** — A single `PostToolUse` hook in `settings.json` fires `heartbeat.py` asynchronously after every file write or shell command. Zero impact on your workflow.
+- **CLI Tools** — Claude Code is fully automated today; Codex already supports the manual scripts; the architecture is open to any coding CLI.
+- **Hook Layer** — A single `PostToolUse` hook in `settings.json` fires `heartbeat.py` asynchronously after every file write or shell command in Claude Code. Zero impact on your workflow.
 - **Scripts** — Four focused Python scripts: `heartbeat.py` (auto, lightweight), `save_session.py` (init / checkpoint / cleanup), `list_sessions.py` (scan & rank), `restore_session.py` (format & print).
 - **Storage** — Two JSON file types in `~/.claude/sessions/`: `active_{hash}.json` for the running session (rolling 10 checkpoints), and `archive_{hash}_{ts}.json` for sessions awaiting restore or expiry.
 
@@ -130,6 +132,24 @@ python3 ~/.claude/skills/fireworks-sessions-saver/scripts/restore_session.py \
   --session-file ~/.claude/sessions/archive_abc12345_20260408_143022.json
 ```
 
+### Codex today
+Codex does not expose Claude-style hooks, so the recommended flow is explicit:
+
+```bash
+# Save a rich checkpoint from the current Codex working session
+python3 ~/.claude/skills/fireworks-sessions-saver/scripts/save_session.py \
+  --working-dir "$(pwd)" \
+  --tool "codex" \
+  --action checkpoint \
+  --summary "Brief current status" \
+  --current-task "Specific task in progress"
+
+# Later, scan and restore from the same working directory
+python3 ~/.claude/skills/fireworks-sessions-saver/scripts/list_sessions.py "$(pwd)"
+python3 ~/.claude/skills/fireworks-sessions-saver/scripts/restore_session.py \
+  --session-file ~/.claude/sessions/archive_<hash>_<timestamp>.json
+```
+
 ---
 
 ## Storage
@@ -150,10 +170,11 @@ python3 ~/.claude/skills/fireworks-sessions-saver/scripts/restore_session.py \
 ## Requirements
 
 - Python 3.9+
-- Claude Code CLI
+- Claude Code CLI for hook-based auto-tracking
+- Codex CLI for manual checkpoint / restore workflows
 - macOS / Linux
 
-> **Codex CLI**: Hook-based auto-tracking is not yet supported (Codex does not have a hook system). Manual checkpoint and restore via the scripts still work. Full Codex support is on the roadmap.
+> **Codex CLI**: Hook-based auto-tracking is not yet supported (Codex does not have a hook system). Manual checkpoint, dashboard, diff, and restore via the scripts already work today. Full auto-tracking is on the roadmap.
 
 ---
 
@@ -161,6 +182,7 @@ python3 ~/.claude/skills/fireworks-sessions-saver/scripts/restore_session.py \
 
 - [x] Claude Code — full auto-tracking via PostToolUse hook
 - [ ] Codex CLI — auto-tracking support ([planned](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/issues))
+- [x] Codex CLI — manual checkpoint / dashboard / diff / restore flows
 - [x] Session diff view — show what changed between checkpoints
 - [x] Multi-project dashboard — view all active sessions across directories
 

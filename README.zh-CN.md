@@ -6,12 +6,12 @@
 
 **再也不会丢失编程会话上下文。**
 
-自动持久化并恢复 Claude Code 的会话状态。Codex 支持即将推出。
+自动持久化并恢复 Claude Code 的会话状态，今天也可在 Codex 中手动使用。
 
 [![Version](https://img.shields.io/badge/version-1.0.0-orange.svg)](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-supported-8A2BE2)](https://claude.ai/code)
-[![Codex](https://img.shields.io/badge/Codex-planned-gray.svg)](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/issues)
+[![Codex](https://img.shields.io/badge/Codex-manual-111111.svg)](https://openai.com)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://python.org)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/pulls)
 
@@ -32,12 +32,14 @@
 
 ## 解决方案
 
-`fireworks-sessions-saver` 自动追踪你正在做的事，当你重新连接时——无论是哪个新窗口——立刻恢复现场。
+`fireworks-sessions-saver` 会在 Claude Code 中自动追踪你正在做的事，让你在重新连接时立刻恢复现场；同一套 checkpoint 和恢复脚本今天也能在 Codex 里手动使用。
 
 ```
 第 1 次：  正在做 auth 重构 → 每次工具调用自动追踪
            网络断了
 新 session：「发现 1 个历史 session——是否恢复？」→ 一键确认  ✓ 5 秒回到现场
+
+Codex：    显式保存 checkpoint → 之后用同一套脚本恢复          ✓ 今天可用
 ```
 
 ---
@@ -66,8 +68,8 @@
 
 从上到下四层：
 
-- **CLI 工具层** — 主要支持 Claude Code 和 Codex，架构对其他 coding CLI 工具开放扩展。
-- **Hook 层** — `settings.json` 中一条 `PostToolUse` hook，在每次文件写入或命令执行后异步触发 `heartbeat.py`，对使用流程零影响。
+- **CLI 工具层** — Claude Code 今天已完整自动化；Codex 已支持手动脚本流；架构对其他 coding CLI 工具开放扩展。
+- **Hook 层** — `settings.json` 中一条 `PostToolUse` hook，在 Claude Code 的每次文件写入或命令执行后异步触发 `heartbeat.py`，对使用流程零影响。
 - **脚本层** — 四个职责单一的 Python 脚本：`heartbeat.py`（自动、轻量）、`save_session.py`（初始化 / checkpoint / 清理）、`list_sessions.py`（扫描 & 排序）、`restore_session.py`（格式化 & 输出）。
 - **存储层** — `~/.claude/sessions/` 下两类 JSON 文件：`active_{hash}.json` 存储当前 session（滚动 10 条 checkpoint），`archive_{hash}_{ts}.json` 存储等待恢复或过期的历史 session。
 
@@ -128,6 +130,24 @@ python3 ~/.claude/skills/fireworks-sessions-saver/scripts/restore_session.py \
   --session-file ~/.claude/sessions/archive_abc12345_20260408_143022.json
 ```
 
+### Codex 当前用法
+Codex 没有 Claude 风格的 hooks，所以推荐走显式流程：
+
+```bash
+# 从当前 Codex 工作会话保存完整 checkpoint
+python3 ~/.claude/skills/fireworks-sessions-saver/scripts/save_session.py \
+  --working-dir "$(pwd)" \
+  --tool "codex" \
+  --action checkpoint \
+  --summary "当前状态简述" \
+  --current-task "正在进行的具体任务"
+
+# 之后在同一工作目录下扫描并恢复
+python3 ~/.claude/skills/fireworks-sessions-saver/scripts/list_sessions.py "$(pwd)"
+python3 ~/.claude/skills/fireworks-sessions-saver/scripts/restore_session.py \
+  --session-file ~/.claude/sessions/archive_<hash>_<timestamp>.json
+```
+
 ---
 
 ## 存储说明
@@ -148,10 +168,11 @@ python3 ~/.claude/skills/fireworks-sessions-saver/scripts/restore_session.py \
 ## 环境要求
 
 - Python 3.9+
-- Claude Code CLI
+- Claude Code CLI：用于基于 hook 的自动追踪
+- Codex CLI：用于手动 checkpoint / restore 流程
 - macOS / Linux
 
-> **Codex CLI**：基于 hook 的自动追踪暂不支持（Codex 没有 hook 系统）。手动 checkpoint 和恢复脚本仍可正常使用。完整 Codex 支持已列入计划。
+> **Codex CLI**：基于 hook 的自动追踪暂不支持（Codex 没有 hook 系统）。但手动 checkpoint、dashboard、diff 和恢复脚本今天已经可用。全自动追踪仍在路线图中。
 
 ---
 
@@ -159,12 +180,9 @@ python3 ~/.claude/skills/fireworks-sessions-saver/scripts/restore_session.py \
 
 - [x] Claude Code — 通过 PostToolUse hook 全自动追踪
 - [ ] Codex CLI — 自动追踪支持（[计划中](https://github.com/yizhiyanhua-ai/fireworks-sessions-saver/issues)）
+- [x] Codex CLI — 手动 checkpoint / dashboard / diff / restore 流程
 - [x] Session diff 视图 — 展示两次 checkpoint 之间的变化
 - [x] 多项目看板 — 跨目录查看所有活跃 session
-
-- Python 3.9+
-- Claude Code CLI（或 Codex CLI）
-- macOS / Linux
 
 ---
 
